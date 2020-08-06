@@ -9,4 +9,4 @@ XBee End Device is connected to the person whose movement need to be tracked.
 
 XBee Coordinator is connected to the Desktop running MATLAB for visualizing user movement.
 
-For more information of the project, visit: https://indiarxiv.org/afkej/
+For more information about the project, visit: https://indiarxiv.org/afkej/
