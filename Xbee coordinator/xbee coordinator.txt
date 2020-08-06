@@ -1,0 +1,72 @@
+//#include <Printers.h>
+#include <XBee.h>
+
+#include <XBee.h>
+
+/*
+This example is for Series 1 XBee (802.15.4)
+Receives either a RX16 or RX64 packet and sets a PWM value based on packet data.
+Error led is flashed if an unexpected packet is received
+*/
+
+XBee xbee = XBee();
+XBeeResponse response = XBeeResponse();
+// create reusable response objects for responses we expect to handle 
+Rx16Response rx16 = Rx16Response();
+Rx64Response rx64 = Rx64Response();
+
+
+uint8_t option = 0;
+uint8_t data = 0;
+
+
+
+void setup() {
+  // start serial
+  Serial.begin(9600);
+  xbee.setSerial(Serial);
+  
+  }
+
+// continuously reads packets, looking for RX16 or RX64
+void loop() {
+  
+  String sample;
+  String sample2;
+  String sample3;
+  String sample4;
+  String sample5;
+    
+    xbee.readPacket();
+    
+    if (xbee.getResponse().isAvailable()) {
+      // got something
+      
+      if (xbee.getResponse().getApiId() == RX_16_RESPONSE || xbee.getResponse().getApiId() == RX_64_RESPONSE) {
+        // got a rx packet
+        
+        if (xbee.getResponse().getApiId() == RX_16_RESPONSE) {
+                xbee.getResponse().getRx16Response(rx16);
+            //option = rx16.getOption();
+                //for (int i = 0; i < rx16.getDataLength(); i++){
+                sample += rx16.getData(0);
+                sample2 += rx16.getData(1);
+                sample3 += rx16.getData(2);
+                sample4 += rx16.getData(3);
+                sample5 += rx16.getData(4);
+                Serial.print(sample);
+                Serial.print(sample2);
+                Serial.print(sample3);
+                Serial.print(sample4);
+                Serial.print(sample5);
+                //}
+        } 
+        }
+        
+        // TODO check option, rssi bytes    
+        //flashLed(statusLed, 1, 10);
+        
+        // set dataLed PWM to value of the first byte in the data
+        //analogWrite(dataLed, data);
+      } 
+    } 
